@@ -17,7 +17,10 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/julien-nc/nextcloud-webdav-filepicker"
+		"url": "https://github.com/Communia/nextcloud-webdav-filepicker"
+	},
+	"publishConfig": {
+		"registry": "https://npm.pkg.github.com/"
 	},
 	"keywords": [
 		"filepicker",
@@ -27,9 +30,9 @@
 	"author": "Julien Veyssier",
 	"license": "AGPL-3.0",
 	"bugs": {
-		"url": "https://github.com/julien-nc/nextcloud-webdav-filepicker/issues"
+		"url": "https://github.com/Communia/nextcloud-webdav-filepicker/issues"
 	},
-	"homepage": "https://github.com/julien-nc/nextcloud-webdav-filepicker",
+	"homepage": "https://github.com/Communia/nextcloud-webdav-filepicker",
 	"browserslist": [
 		"extends @nextcloud/browserslist-config"
 	],
