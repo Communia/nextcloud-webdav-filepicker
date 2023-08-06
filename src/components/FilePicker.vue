@@ -27,6 +27,16 @@
 				:parts="currentPathParts"
 				:disabled="loadingDirectory || uploadingFiles || downloadingFiles"
 				@hash-changed="onBreadcrumbChange" />
+			<NcButton
+				type="tertiary"
+				:pressed.sync="gridUsed"
+				:aria-label="gridLabel"
+				@click="toggleGridUsed()">
+				<template #icon>
+					<IconViewList v-if="gridUsed" :size="20" />
+					<IconViewGrid v-else :size="20" />
+				</template>
+			</NcButton>
 		</div>
 		<span v-if="loadingDirectory"
 			:class="{ icon: true, 'loading-custom': true, rotate: true, dark: darkMode, 'loading-custom-main': true }" />
@@ -38,6 +48,7 @@
 			:multiple-select="multipleDownload"
 			:disabled="loadingDirectory || uploadingFiles || downloadingFiles"
 			:searching-mode="searching"
+			:elements-layout="gridUsed? 'grid' : 'list'"
 			@folder-clicked="$emit('folder-clicked', $event)"
 			@selection-changed="onSelectionChange">
 			<template #file-icon="{node}">
@@ -193,6 +204,8 @@
 import RefreshIcon from 'vue-material-design-icons/Refresh.vue'
 import FolderIcon from 'vue-material-design-icons/Folder.vue'
 import AccountOffIcon from 'vue-material-design-icons/AccountOff.vue'
+import IconViewGrid from 'vue-material-design-icons/ViewGrid.vue'
+import IconViewList from 'vue-material-design-icons/FormatListBulletedSquare.vue'
 
 import PickerSearch from './PickerSearch.vue'
 import PickerBreadcrumbs from './PickerBreadcrumbs.vue'
@@ -205,6 +218,7 @@ import ProgressBar from 'vue-simple-progress'
 
 import Tooltip from '@nextcloud/vue/dist/Directives/Tooltip.js'
 import NcEmptyContent from '@nextcloud/vue/dist/Components/NcEmptyContent.js'
+import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
 import { dirname, basename } from '@nextcloud/paths'
 
 export default {
@@ -216,10 +230,13 @@ export default {
 		FileBrowser,
 		ProgressBar,
 		NcEmptyContent,
+		NcButton,
 		MyDatetimePicker,
 		FolderIcon,
 		AccountOffIcon,
 		RefreshIcon,
+		IconViewGrid,
+		IconViewList,
 	},
 
 	directives: {
@@ -318,6 +335,7 @@ export default {
 			namingNewDirectory: false,
 			creatingDirectory: false,
 			newDirectoryName: '',
+			gridUsed: false,
 		}
 	},
 
@@ -406,6 +424,9 @@ export default {
 			}
 			return ''
 		},
+		gridLabel() {
+			return this.gridUsed ? 'Show as list' : 'Show as grid'
+		},
 	},
 
 	watch: {
@@ -473,6 +494,10 @@ export default {
 			} else {
 				this.$emit('validate')
 			}
+		},
+		toggleGridUsed() {
+			console.debug(this.gridUsed)
+			this.gridUsed = !this.gridUsed
 		},
 	},
 }
