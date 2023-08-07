@@ -131,6 +131,7 @@ export default {
 		width: 200px;
 		margin: auto;
 		aspect-ratio: 16 / 9;
+		object-fit: cover;
 	}
 }
 </style>

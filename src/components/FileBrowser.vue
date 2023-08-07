@@ -406,6 +406,7 @@ export default {
 			display: flex;
 			flex-direction: column;
 			text-align: center;
+			justify-content: center;
 			&.selectable > * {
 				opacity: 100%;
 			}
