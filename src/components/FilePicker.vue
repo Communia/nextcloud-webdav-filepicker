@@ -22,9 +22,9 @@
 				@hash-changed="onBreadcrumbChange" />
 			<NcButton
 				type="tertiary"
-				:pressed.sync="gridUsed"
 				:aria-label="gridLabel"
-				@click="toggleGridUsed()">
+				:title="gridLabel"
+				@click="toggleGridUsed">
 				<template #icon>
 					<IconViewList v-if="gridUsed" :size="20" />
 					<IconViewGrid v-else :size="20" />
@@ -496,7 +496,6 @@ export default {
 			}
 		},
 		toggleGridUsed() {
-			console.debug(this.gridUsed)
 			this.gridUsed = !this.gridUsed
 		},
 	},
