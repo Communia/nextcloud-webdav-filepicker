@@ -1,17 +1,24 @@
 <template>
-	<NcBreadcrumbs>
-		<NcBreadcrumb title="Home" href="#/" />
+	<NcBreadcrumbs class="crumbs">
+		<NcBreadcrumb name="Home" href="#/">
+			<template #icon>
+				<HomeIcon :size="20" />
+			</template>
+		</NcBreadcrumb>
 		<NcBreadcrumb v-for="p in parts"
 			:key="p.path"
-			:title="p.name"
+			:name="p.name"
 			:href="'#' + p.path" />
 	</NcBreadcrumbs>
 </template>
 
 <script>
-import { addCustomEventListener } from '../utils.js'
+import HomeIcon from 'vue-material-design-icons/Home.vue'
+
 import NcBreadcrumb from '@nextcloud/vue/dist/Components/NcBreadcrumb.js'
 import NcBreadcrumbs from '@nextcloud/vue/dist/Components/NcBreadcrumbs.js'
+
+import { addCustomEventListener } from '../utils.js'
 
 export default {
 	name: 'PickerBreadcrumbs',
@@ -19,6 +26,7 @@ export default {
 	components: {
 		NcBreadcrumb,
 		NcBreadcrumbs,
+		HomeIcon,
 	},
 
 	props: {
@@ -53,33 +61,22 @@ export default {
 </script>
 
 <style scoped lang="scss">
-::v-deep .vue-crumb {
+.crumbs {
+	:deep(.breadcrumb__crumbs) {
+		padding: 0 !important;
+	}
+}
+
+:deep(.vue-crumb) {
 	>a {
-		padding: 12px;
+		padding: 0 8px;
 		text-decoration: none;
 		color: var(--color-text-lighter);
-	}
-
-	.icon {
-		margin-top: -6px;
-		top: 2px;
-		position: relative;
-		// opacity: 0.4;
+		border-radius: 8px;
 	}
 
 	&::before {
 		color: var(--color-text-lighter);
 	}
-}
-
-::v-deep .icon-home {
-	// background-image: url('./../../img/home.svg');
-	mask: url('./../../img/home.svg') no-repeat;
-	mask-size: 16px auto;
-	mask-position: center;
-	-webkit-mask: url('./../../img/home.svg') no-repeat;
-	-webkit-mask-size: 16px auto;
-	-webkit-mask-position: center;
-	background-color: var(--color-text-lighter);
 }
 </style>

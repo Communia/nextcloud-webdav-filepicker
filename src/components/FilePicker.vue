@@ -6,10 +6,14 @@
 			</h2>
 			<span v-show="downloadingFiles || uploadingFiles"
 				:class="{ icon: true, 'loading-custom': true, rotate: true, dark: darkMode }" />
-			<button class="closeButton"
+			<NcButton
+				type="tertiary"
+				:title="t('filepicker', 'Close')"
 				@click="$emit('close')">
-				<span class="icon icon-close" />
-			</button>
+				<template #icon>
+					<CloseIcon />
+				</template>
+			</NcButton>
 		</div>
 		<div class="bread-container">
 			<PickerBreadcrumbs
@@ -44,14 +48,14 @@
 			</template>
 		</FileBrowser>
 		<NcEmptyContent v-else-if="connected"
-			:title="t('filepicker', 'This folder is empty')"
+			:name="t('filepicker', 'This folder is empty')"
 			class="empty-content">
 			<template #icon>
 				<FolderIcon />
 			</template>
 		</NcEmptyContent>
 		<NcEmptyContent v-else
-			:title="t('filepicker', 'Not connected')"
+			:name="t('filepicker', 'Not connected')"
 			class="empty-content">
 			<template #icon>
 				<AccountOffIcon />
@@ -112,14 +116,17 @@
 			:max="100"
 			:text="downloadProgress + '%'" />
 		<div v-else class="footer">
-			<button v-if="displayQuotaRefresh && quota"
-				:title="t('filepicker', 'Update quota')"
+			<NcButton v-if="displayQuotaRefresh && quota"
+				type="tertiary"
 				class="refreshQuotaButton"
+				:title="t('filepicker', 'Update quota')"
 				@click="$emit('refresh-quota')">
-				<span v-if="quotaLoading"
-					:class="{ icon: true, 'loading-custom': true, rotate: true, dark: darkMode }" />
-				<RefreshIcon v-else />
-			</button>
+				<template #icon>
+					<span v-if="quotaLoading"
+						:class="{ icon: true, 'loading-custom': true, rotate: true, dark: darkMode }" />
+					<RefreshIcon v-else />
+				</template>
+			</NcButton>
 			<ProgressBar v-if="quota"
 				size="small"
 				class="quota"
@@ -128,12 +135,13 @@
 				:text="quotaText" />
 			<div v-if="connected && ['getSaveFilePath', 'uploadFiles', 'getUploadFileLink'].includes(mode)"
 				class="newDirectory">
-				<button v-if="!namingNewDirectory"
-					v-tooltip.top="{ content: t('filepicker', 'Create new folder'), popperClass: darkMode ? 'dark' : '' }"
-					class="newDirectoryButton"
+				<NcButton v-if="!namingNewDirectory"
+					:title="t('filepicker', 'Create new folder')"
 					@click="onCreateDirectory">
-					<span class="icon icon-add" />
-				</button>
+					<template #icon>
+						<PlusIcon />
+					</template>
+				</NcButton>
 				<div v-else
 					class="newDirectoryForm">
 					<input v-model="newDirectoryName"
@@ -141,46 +149,55 @@
 						:placeholder="t('filepicker', 'New folder name')"
 						@keyup.escape="onCancelNewDirectory"
 						@keyup.enter="createDirectory">
-					<button
-						v-tooltip.top="{ content: t('filepicker', 'Cancel'), popperClass: darkMode ? 'dark' : '' }"
-						class="newDirectoryButton"
+					<NcButton
+						:title="t('filepicker', 'Cancel')"
 						@click="onCancelNewDirectory">
-						<span class="icon icon-history" />
-					</button>
-					<button
-						v-tooltip.top="{ content: t('filepicker', 'Ok'), popperClass: darkMode ? 'dark' : '' }"
-						class="newDirectoryButton"
+						<template #icon>
+							<CloseIcon />
+						</template>
+					</NcButton>
+					<NcButton
+						:title="t('filepicker', 'Ok')"
 						@click="createDirectory">
-						<span class="icon icon-checkmark" />
-					</button>
+						<template #icon>
+							<CheckIcon />
+						</template>
+					</NcButton>
 				</div>
 			</div>
 			<div v-if="showSelectNone || showSelectAll"
 				class="allNoneButtons">
-				<button v-if="showSelectNone"
+				<NcButton v-if="showSelectNone"
 					@click="selectNone">
-					<span class="icon custom-icon icon-unchecked" />
-					{{ t('filepicker', 'None') }}
-				</button>
-				<button v-if="showSelectAll"
+					{{ t('filepicker', 'Deselect all') }}
+					<template #icon>
+						<CheckboxBlankOutlineIcon />
+					</template>
+				</NcButton>
+				<NcButton v-if="showSelectAll"
 					@click="selectAll">
-					<span class="icon custom-icon icon-checked" />
-					{{ t('filepicker', 'All') }}
-				</button>
+					{{ t('filepicker', 'Select all') }}
+					<template #icon>
+						<CheckboxOutlineIcon />
+					</template>
+				</NcButton>
 			</div>
+
+			<div class="spacer" />
 
 			<div id="validate">
 				<span v-if="connected && (selection.length > 0 || ['getFilesPath', 'downloadFiles', 'getFilesLink'].includes(mode))"
 					class="nb-selected">
 					{{ nbSelectedText }}
 				</span>
-				<button v-if="connected && canValidate"
+				<NcButton v-if="connected && canValidate"
+					type="primary"
 					@click="onValidate">
-					<span class="icon icon-checkmark" />
-					<span class="button-text">
-						{{ validateButtonText }}
-					</span>
-				</button>
+					<template #icon>
+						<CheckIcon />
+					</template>
+					{{ validateButtonText }}
+				</NcButton>
 			</div>
 		</div>
 	</div>
@@ -192,6 +209,11 @@ import FolderIcon from 'vue-material-design-icons/Folder.vue'
 import AccountOffIcon from 'vue-material-design-icons/AccountOff.vue'
 import IconViewGrid from 'vue-material-design-icons/ViewGrid.vue'
 import IconViewList from 'vue-material-design-icons/FormatListBulletedSquare.vue'
+import CloseIcon from 'vue-material-design-icons/Close.vue'
+import PlusIcon from 'vue-material-design-icons/Plus.vue'
+import CheckIcon from 'vue-material-design-icons/Check.vue'
+import CheckboxBlankOutlineIcon from 'vue-material-design-icons/CheckboxBlankOutline.vue'
+import CheckboxOutlineIcon from 'vue-material-design-icons/CheckboxOutline.vue'
 
 import PickerBreadcrumbs from './PickerBreadcrumbs.vue'
 import FileBrowser from './FileBrowser.vue'
@@ -221,6 +243,11 @@ export default {
 		RefreshIcon,
 		IconViewGrid,
 		IconViewList,
+		CloseIcon,
+		PlusIcon,
+		CheckIcon,
+		CheckboxOutlineIcon,
+		CheckboxBlankOutlineIcon,
 	},
 
 	directives: {
@@ -478,7 +505,7 @@ export default {
 
 <style scoped lang="scss">
 .picker__content {
-	width: 900px;
+	//width: 900px;
 	// height: 800px;
 	background: var(--color-main-background);
 	color: var(--color-main-text);
@@ -520,51 +547,11 @@ export default {
 		height: 100%;
 	}
 
-	button {
-		height: 44px;
-		cursor: pointer;
-		padding: 10px;
-		font-weight: bold;
-		border-radius: 100px;
-		border: 1px solid lightgrey;
-		background-color: var(--color-background-dark);
-		color: var(--color-main-text);
-
-		&:hover {
-			border-color: var(--color-primary-element);
-		}
-	}
-
 	.refreshQuotaButton {
-		width: 44px;
-		height: 44px;
-		border: 0;
-		background-color: var(--color-main-background);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		&:hover {
-			background-color: var(--color-background-hover);
-		}
 		.icon {
 			background-color: rgba(0, 0, 0, 0);
 			margin: 0;
 			background-size: 20px;
-		}
-	}
-
-	.closeButton {
-		width: 44px;
-		height: 44px;
-		margin: 0;
-		border-radius: 50%;
-		border: 0;
-		background-color: var(--color-main-background);
-		&:hover {
-			background-color: var(--color-background-hover);
-		}
-		.icon {
-			width: 16px;
 		}
 	}
 
@@ -590,6 +577,20 @@ export default {
 
 		.allNoneButtons,
 		.newDirectory {
+			//flex-grow: 1;
+			.newDirectoryForm {
+				display: flex;
+				align-items: center;
+				gap: 2px;
+			}
+		}
+		.allNoneButtons {
+			display: flex;
+			gap: 2px;
+			align-items: center;
+		}
+
+		.spacer {
 			flex-grow: 1;
 		}
 
@@ -643,9 +644,6 @@ export default {
 				margin: auto 2px auto 2px !important;
 			}
 		}
-		.spacer {
-			flex-grow: 1;
-		}
 
 		input[type=checkbox] {
 			margin: auto 5px auto 5px;
@@ -659,26 +657,6 @@ export default {
 		label {
 			cursor: pointer;
 		}
-	}
-
-	.share-link-settings .custom-icon,
-	button .custom-icon {
-		mask-size: 15px auto;
-		mask-position: center;
-		-webkit-mask-size: 15px auto;
-		-webkit-mask-position: center;
-		background-color: var(--color-main-text);
-		// margin-bottom: -2px;
-		width: 20px;
-	}
-
-	.icon-checked {
-		mask: url('../../img/checked.svg') no-repeat;
-		-webkit-mask: url('../../img/checked.svg') no-repeat;
-	}
-	.icon-unchecked {
-		mask: url('../../img/unchecked.svg') no-repeat;
-		-webkit-mask: url('../../img/unchecked.svg') no-repeat;
 	}
 }
 

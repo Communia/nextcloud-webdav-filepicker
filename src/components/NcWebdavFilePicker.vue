@@ -1,52 +1,65 @@
 <template>
-	<div class="nextcloud-filepicker">
+	<div class="nextcloud-filepicker"
+		:style="cssVars">
 		<div id="trigger-buttons">
 			<div v-if="enableGetFilesPath" @click="getFilesPath">
 				<slot name="get-files-path">
-					<button>
-						<span class="icon icon-download" />
+					<NcButton>
 						{{ t('filepicker', 'Get files path') }}
-					</button>
+						<template #icon>
+							<DownloadIcon />
+						</template>
+					</NcButton>
 				</slot>
 			</div>
 			<div v-if="enableGetFilesLink" @click="onGetFilesLinkClick">
 				<slot name="get-files-link">
-					<button>
-						<span class="icon icon-public" />
+					<NcButton>
 						{{ t('filepicker', 'Get files link') }}
-					</button>
+						<template #icon>
+							<LinkVariantIcon />
+						</template>
+					</NcButton>
 				</slot>
 			</div>
 			<div v-if="enableDownloadFiles" @click="downloadFiles">
 				<slot name="download-files">
-					<button>
-						<span class="icon icon-download" />
+					<NcButton>
 						{{ t('filepicker', 'Download files') }}
-					</button>
+						<template #icon>
+							<DownloadIcon />
+						</template>
+					</NcButton>
 				</slot>
 			</div>
 			<div v-if="enableGetSaveFilePath" @click="getSaveFilePath">
 				<slot name="get-save-file-path">
-					<button>
-						<span class="icon icon-upload" />
+					<NcButton>
 						{{ t('filepicker', 'Get save file path') }}
-					</button>
+						<template #icon>
+							<UploadIcon />
+						</template>
+					</NcButton>
 				</slot>
 			</div>
 			<div v-if="enableGetUploadFileLink" @click="getUploadFileLink">
 				<slot name="get-upload-fileLink">
-					<button>
-						<span class="icon icon-upload" />
+					<NcButton>
 						{{ t('filepicker', 'Get file upload link') }}
-					</button>
+						<template #icon>
+							<UploadIcon />
+						</template>
+					</NcButton>
 				</slot>
 			</div>
 			<div v-if="enableUploadFiles" @click="openFileInput">
 				<slot name="open-file-input">
-					<button>
-						<span class="icon icon-upload" />
+					<NcButton>
 						{{ t('filepicker', 'Upload files') }}
-					</button>
+						<template #icon>
+							<UploadIcon />
+						</template>
+					</NcButton>
 				</slot>
 			</div>
 		</div>
@@ -62,6 +75,7 @@
 			:style="cssVars"
 			@close="close">
 			<FilePicker
+				class="modal-picker"
 				:get-title="getTitle"
 				:put-title="putTitle"
 				:loading-directory="loadingDirectory"
@@ -113,7 +127,12 @@ import moment from '@nextcloud/moment'
 import FilePicker from './FilePicker.vue'
 import NextcloudFileIcon from './NextcloudFileIcon.vue'
 
+import DownloadIcon from 'vue-material-design-icons/Download.vue'
+import UploadIcon from 'vue-material-design-icons/Upload.vue'
+import LinkVariantIcon from 'vue-material-design-icons/LinkVariant.vue'
+
 import NcModal from '@nextcloud/vue/dist/Components/NcModal.js'
+import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
 
 export default {
 	name: 'NcWebdavFilePicker',
@@ -122,6 +141,10 @@ export default {
 		NcModal,
 		FilePicker,
 		NextcloudFileIcon,
+		NcButton,
+		DownloadIcon,
+		UploadIcon,
+		LinkVariantIcon,
 	},
 
 	props: {
@@ -305,7 +328,10 @@ export default {
 			return {
 				'--color-primary': this.mainColor,
 				'--color-primary-element': this.mainColor,
+				'--color-primary-element-hover': this.colorPrimaryElementHover,
 				'--color-primary-text': '#ffffff',
+				'--color-primary-element-text': this.colorPrimaryElementText,
+				'--color-primary-element-light-text': this.mainTextColor,
 				'--color-primary-element-light': this.mainColorLight,
 				'--color-primary-light': this.mainColorLighter,
 				'--color-main-background': this.mainBackgroundColor,
@@ -318,6 +344,7 @@ export default {
 				'--color-background-darker': this.colorBackgroundDarker,
 				'--border-radius-large': '10px',
 				'--default-font-size': '15px',
+				'--default-grid-baseline': '4px',
 				'--font-face': '-apple-system,BlinkMacSystemFont,\'Segoe UI\',Roboto,Oxygen-Sans,Cantarell,Ubuntu,\'Helvetica Neue\',Arial,\'Noto Color Emoji\',sans-serif,\'Apple Color Emoji\',\'Segoe UI Emoji\',\'Segoe UI Symbol\'',
 			}
 		},
@@ -370,6 +397,12 @@ export default {
 			return this.myDarkMode
 				? colorOpacity(this.mainColor, 0.8)
 				: colorOpacity(this.mainColor, 0.2)
+		},
+		colorPrimaryElementText() {
+			return '#fff'
+		},
+		colorPrimaryElementHover() {
+			return colorOpacity(this.mainColor, 0.8)
 		},
 		authUrl() {
 			return this.url + '/index.php/apps/webapppassword'
@@ -542,7 +575,7 @@ export default {
 				this.loginWindow = window.open(
 					authUrl,
 					'Nextcloud Login',
-					'width=400,height=400,menubar=no,scrollbars=no,status=no,titlebar=no,toolbar=no'
+					'width=400,height=400,menubar=no,scrollbars=no,status=no,titlebar=no,toolbar=no',
 				)
 				window.addEventListener('message', this.onReceiveWindowMessage)
 			}
@@ -755,7 +788,7 @@ export default {
 					const req = {
 						path,
 						shareType: 3,
-						label: this.linkLabel || 'File picker link',
+						label: this.linkLabel || 'File picker link ' + moment().format('YYYY-MM-DD'),
 						expireDate: options.expirationDate ? moment(options.expirationDate).format('YYYY-MM-DD') : null,
 						password: options.protectionPassword ? options.protectionPassword : undefined,
 					}
@@ -1020,14 +1053,6 @@ export default {
 .nextcloud-filepicker {
 	#trigger-buttons {
 		display: flex;
-
-		button {
-			padding: 10px;
-			font-weight: bold;
-			border-radius: 100px;
-			border: 1px solid lightgrey;
-			cursor: pointer;
-		}
 	}
 
 	.icon {
@@ -1046,10 +1071,18 @@ export default {
 	}
 }
 
+.modal-picker {
+	width: 100%;
+}
+
 ::v-deep .modal-container {
 	display: flex !important;
 	min-height: 80%;
-	border-radius: 10px !important;
+
+	&__content {
+		border-radius: 10px !important;
+		display: flex;
+	}
 
 	.icon {
 		min-width: 16px;
