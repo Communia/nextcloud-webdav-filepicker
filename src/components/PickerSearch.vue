@@ -289,8 +289,8 @@ export default {
 
 .search-bar{
 	display: flex;
-	gap: 4px;
-	align-items: center;
+	gap: 10px;
+	align-items: last baseline;
 }
 
 </style>
