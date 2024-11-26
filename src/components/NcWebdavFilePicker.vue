@@ -111,9 +111,9 @@
 			</FilePicker>
 		</NcModal>
 		<div v-if="!useModal"
-            class="nextcloud-filepicker-wrapper"
+			class="nextcloud-filepicker-wrapper"
 			:style="cssVars">
-            <FilePicker
+			<FilePicker
 				:get-title="getTitle"
 				:put-title="putTitle"
 				:loading-directory="loadingDirectory"
