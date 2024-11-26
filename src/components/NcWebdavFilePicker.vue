@@ -112,7 +112,7 @@
 				</template>
 			</FilePicker>
 		</NcModal>
-		<div v-if="!useModal" 
+		<div v-if="!useModal"
             class="nextcloud-filepicker-wrapper"
 			:style="cssVars">
             <FilePicker
@@ -149,7 +149,7 @@
 						:client="client" />
 				</template>
 			</FilePicker>
-		</div>		
+		</div>
 	</div>
 </template>
 
@@ -326,7 +326,7 @@ export default {
 		useModal: {
 			type: Boolean,
 			default: true,
-		}		
+		},
 	},
 
 	data() {
@@ -791,7 +791,7 @@ export default {
 			} else if (this.mode === 'getFilesLink') {
 				const shareLinksResult = await this.getFilesShareLink(this.selection, options)
 				const shouldClosePicker = shareLinksResult.error === false || this.closeOnError
-				const ocsUrl = this.url + '/ocs/v2.php/apps/files_sharing/api/v1/shares'
+				const ocsUrl = this.url + '/index.php/apps/webapppassword/api/v1/shares'
 				const genericShareLink = this.url + '/index.php/s/TOKEN'
 				const detail = {
 					pathList: this.selection,
@@ -852,7 +852,7 @@ export default {
 			// create shared access with OCS API
 			// problem : CORS headers don't allow this for the moment,
 			// this could be done by adding a global origin whitelist in NC server
-			const url = this.url + '/ocs/v2.php/apps/files_sharing/api/v1/shares'
+			const url = this.url + '/index.php/apps/webapppassword/api/v1/shares'
 			const shareLinksResult = {
 				error: false,
 				publicLinks: [],
