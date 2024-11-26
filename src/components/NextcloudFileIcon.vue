@@ -64,7 +64,7 @@ export default {
 			return this.ncUrl
 				// + '/index.php/core/preview.png?'
 				// + 'file=' + encodeURIComponent(this.node.filename)
-				+ '/index.php/core/preview?'
+				+ '/index.php/apps/webapppassword/core/preview?'
 				+ 'fileId=' + this.node.fileid
 				+ '&x=' + PREVIEW_WIDTH
 				+ '&y=' + PREVIEW_HEIGHT

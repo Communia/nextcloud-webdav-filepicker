@@ -113,9 +113,9 @@
 			</FilePicker>
 		</NcModal>
 		<div v-if="!useModal"
-            class="nextcloud-filepicker-wrapper"
+			class="nextcloud-filepicker-wrapper"
 			:style="cssVars">
-            <FilePicker
+			<FilePicker
 				:get-title="getTitle"
 				:put-title="putTitle"
 				:loading-directory="loadingDirectory"
@@ -887,6 +887,8 @@ export default {
 					const creationSuccess = rawResponse.status < 400
 					if (creationSuccess) {
 						publicLink.url = response.ocs.data.url
+						// CREATION SUCCESFUL, INJECT the SHARE OBJECT HERE
+						publicLink.data = response.ocs.data
 					} else {
 						publicLink.error = response?.ocs?.meta?.message ?? ''
 						shareLinksResult.error = true

@@ -59,5 +59,8 @@ webpackConfig.module.rules.push(
 		fullySpecified: false
 	}
 })
+webpackConfig.optimization = {
+	minimize: false,
+}
 
 module.exports = webpackConfig

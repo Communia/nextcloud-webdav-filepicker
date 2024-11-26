@@ -85,8 +85,8 @@
 					</td>
 					<td :style="''">
 						<div v-if="searchingMode"
-						     class="element-path"
-						     @click="onElemClick({ type:'directory', filename:filenamePath(value) })">
+							class="element-path"
+							@click="onElemClick({ type:'directory', filename:filenamePath(value) })">
 							<small>
 								{{ filenamePath(value) }}
 							</small>
