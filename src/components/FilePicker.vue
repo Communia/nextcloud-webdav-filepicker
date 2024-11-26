@@ -533,6 +533,7 @@ export default {
 .picker__content {
 	//width: 900px;
 	// height: 800px;
+	width: 100vw;
 	background: var(--color-main-background);
 	color: var(--color-main-text);
 	display: flex;
