@@ -33,7 +33,7 @@ webpackConfig.plugins.push(
 	// fix "process is not defined" error:
 	// (do "npm install process" before running the build)
 	new webpack.ProvidePlugin({
-		process: 'process/browser',
+		process: 'process/browser.js',
 	}),
 )
 webpackConfig.plugins.push(
@@ -49,5 +49,15 @@ webpackConfig.plugins.push(
 		failOnError: !isDev,
 	}),
 )
+
+webpackConfig.module.rules.push(
+	{
+	test: /\.mjs$/,
+	include: /node_modules/,
+	type: 'javascript/auto',
+	resolve: {
+		fullySpecified: false
+	}
+})
 
 module.exports = webpackConfig
