@@ -110,7 +110,7 @@
 				</template>
 			</FilePicker>
 		</NcModal>
-		<div v-if="!useModal" 
+		<div v-if="!useModal"
             class="nextcloud-filepicker-wrapper"
 			:style="cssVars">
             <FilePicker
@@ -323,7 +323,7 @@ export default {
 		useModal: {
 			type: Boolean,
 			default: true,
-		}		
+		},
 	},
 
 	data() {
